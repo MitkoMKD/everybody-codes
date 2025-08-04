@@ -22,8 +22,8 @@ namespace CameraSearch.API.Controllers {
             _logger = logger;
         }
 
-        [HttpGet("{name}")]
-        public async Task<IActionResult> GetAsync(string name = "") {
+        [HttpGet("byname")]
+        public async Task<IActionResult> GetAsync([FromQuery] string name = "") {
             try {
                 if (name == null) {
                     name = string.Empty;
@@ -51,24 +51,25 @@ namespace CameraSearch.API.Controllers {
             }
         }
 
-
-        [HttpGet("{name}{lan}{longitude}")]
-        public async Task<IActionResult> GetAsync(string name = "",double lan = 0.0, double longitude = 0.0) {
+        //GET /api/cameras? name = central
+        //GET /api/cameras? lat = 52.1
+        //GET /api/cameras? lon = 5.12
+        //GET /api/cameras? name = market & lat = 52.1
+        [HttpGet("search")]
+        public async Task<IActionResult> GetFilteredCamerasAsync([FromQuery] string name = "", [FromQuery] double? lat = null, [FromQuery] double? lon = null) {
             try {
                 if (name == null) {
                     name = string.Empty;
                 }
 
-                var allCameras = await _cameraService.GetAllAsync();
+                var getFilteredCameras = await _cameraService.GetFilteredCamerasAsync(name,lat,lon);
 
-                if (allCameras == null) {
+                if (getFilteredCameras == null) {
                     _logger.LogWarning("Camera service returned null for Get method with name: {Name}", name);
                     return Ok(new List<Camera>());
                 }
 
-                var results = allCameras.Where(x => x.Name != null || x.Name.Contains(name, StringComparison.OrdinalIgnoreCase) || x.Latitude == lan || x.Longitude == longitude).ToList();
-
-                return Ok(results);
+                return Ok(getFilteredCameras);
             } catch (ApplicationException ex) {
                 _logger.LogError(ex, "Application error occurred while searching cameras by name: {Name}", name);
                 return StatusCode(500, new { error = "Unable to retrieve cameras at this time", details = ex.Message });
@@ -81,7 +82,7 @@ namespace CameraSearch.API.Controllers {
             }
         }
 
-        [HttpGet]
+        [HttpGet("all")]
         public async Task<IActionResult> GetAllAsync() {
             try {
                 var results = await _cameraService.GetAllAsync();
