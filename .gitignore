@@ -1,0 +1,24 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/everybody-codes/CameraSearch.CLI/bin/Debug/net5.0/runtimes/win/lib/netcoreapp2.0
+/everybody-codes/CameraSearch.CLI/obj/Debug/net5.0
+/everybody-codes/CameraSearch.CLI/obj/Release/net5.0
+/everybody-codes/CameraSearch.CLI/obj
+/everybody-codes/CameraSearch.Helper/bin/Debug/net5.0
+/everybody-codes/CameraSearch.Helper/obj
+/everybody-codes/CameraSearch.Repository/obj
+/everybody-codes/CameraSearch.Services/obj
+/everybody-codes/CameraSearch.UnitTests/bin/Release/net5.0
+/everybody-codes/CameraSearch.UnitTests/obj
+/everybody-codes/everybody-codes.Models/obj
+/everybody-codes/WebApplication1/.vs/everybody-codes-solution/v17
+/everybody-codes/WebApplication1/.vs/everybody-codes-solution/FileContentIndex
+/everybody-codes/WebApplication1/.vs/everybody-codes-solution/DesignTimeBuild
+/everybody-codes/WebApplication1/.vs/ProjectEvaluation
+/everybody-codes/WebApplication1/.vs
+/everybody-codes/WebApplication1/bin/Debug/net5.0
+/everybody-codes/WebApplication1/obj
+/everybody-codes/CameraSearch.Web/obj

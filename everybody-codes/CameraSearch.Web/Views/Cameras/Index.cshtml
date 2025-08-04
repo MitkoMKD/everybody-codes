@@ -1,0 +1,218 @@
+﻿@model CameraSearch.Web.ViewModels.CameraViewModel
+@{
+    ViewData["Title"] = "Security cameras Utrecht";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>@ViewData["Title"]</title>
+    <!-- Video camera Icon by Martz90 available at http://www.iconarchive.com/show/circle-icons-by-martz90/video-camera-icon.html under a Creative Commons Attribution-Noncommercial-No Derivate 4.0. Full terms at http://creativecommons.org/licenses/by-nc-nd/4.0 -->
+    <link rel="icon" type="image/x-icon" href="./video-camera-icon.png">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin="" />
+    <style type="text/css">
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            font-size: 0.9em;
+        }
+
+        a {
+            color: #ff6e00;
+        }
+
+        #source {
+            background: rgba(27, 31, 35, 0.08);
+            width: 290px;
+            padding: 8px;
+            border-radius: 20px;
+            margin: 15px auto;
+            text-align: center;
+        }
+
+        h1 {
+            padding: 20px 0 20px 55px;
+            margin: 0 0 0 20px;
+            /* background: url("./video-camera-icon.png") no-repeat; */
+            background-size: 40px;
+            background-position: 0 50%;
+        }
+
+        #cameraTableContainer {
+            margin: 0 0 20px 0;
+            width: 100%;
+            padding: 0 20px;
+        }
+
+            #cameraTableContainer > table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            #cameraTableContainer th {
+                text-align: left;
+                padding: 8px;
+                background-color: #272727;
+                color: #fff;
+            }
+
+            #cameraTableContainer td {
+                padding: 8px;
+                border-bottom: 1px solid #ddd;
+            }
+
+            #cameraTableContainer tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+
+            #cameraTableContainer tr:hover {
+                background-color: #e9e9e9;
+            }
+
+        .column-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px;
+        }
+
+        .column {
+            flex: 1;
+            min-width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .column-header {
+            background-color: #272727;
+            color: white;
+            padding: 10px;
+            font-size: 1.2em;
+        }
+
+        .column-content {
+            padding: 10px;
+        }
+
+        .camera-item {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+            .camera-item:last-child {
+                border-bottom: none;
+            }
+
+        #map {
+            margin: 20px auto;
+            height: 500px;
+            width: 95%;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>@ViewData["Title"]</h1>
+
+    <div id="map"></div>
+
+    <div id="source">
+        source:
+        <a href="https://data.overheid.nl/dataset/camera-s">https://data.overheid.nl/dataset/camera-s</a>
+    </div>
+
+    <div class="column-container">
+        <div class="column">
+            <div class="column-header">Cameras divisible by 3</div>
+            <div class="column-content">
+                @foreach (var camera in Model.DivisibleBy3) {
+                    <div class="camera-item">
+                        <strong>#@camera.Number</strong>: @camera.Name<br>
+                        <small>@camera.Latitude, @camera.Longitude</small>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="column-header">Cameras divisible by 5</div>
+            <div class="column-content">
+                @foreach (var camera in Model.DivisibleBy5) {
+                    <div class="camera-item">
+                        <strong>#@camera.Number</strong>: @camera.Name<br>
+                        <small>@camera.Latitude, @camera.Longitude</small>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="column-header">Cameras divisible by 3 & 5</div>
+            <div class="column-content">
+                @foreach (var camera in Model.DivisibleBy3And5) {
+                    <div class="camera-item">
+                        <strong>#@camera.Number</strong>: @camera.Name<br>
+                        <small>@camera.Latitude, @camera.Longitude</small>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="column-header">Other cameras</div>
+            <div class="column-content">
+                @foreach (var camera in Model.NotDivisible) {
+                    <div class="camera-item">
+                        <strong>#@camera.Number</strong>: @camera.Name<br>
+                        <small>@camera.Latitude, @camera.Longitude</small>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+                integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+                crossorigin=""></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    try {
+                        // Initialize the map
+                        const map = L.map('map').setView([52.0914, 5.1115], 13);
+
+                        // Add the OpenStreetMap tiles
+                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        }).addTo(map);
+
+                        // Serialize camera data to JSON for JavaScript consumption
+                        const cameras = @Html.Raw(Json.Serialize(Model.AllCameras));
+
+                        // Add camera markers
+                        cameras.forEach(function (camera) {
+                            if (camera.latitude && camera.longitude && camera.latitude !== 0 && camera.longitude !== 0) {
+                                L.marker([camera.latitude, camera.longitude])
+                                    .addTo(map)
+                                    .bindPopup('<b>' + camera.name + '</b><br>Camera #' + camera.number);
+                            }
+                        });
+
+                        console.log('Map initialized successfully with ' + cameras.length + ' cameras');
+
+                    } catch (error) {
+                        console.error('Error initializing map:', error);
+                    }
+                });
+        </script>
+</body>
+</html>

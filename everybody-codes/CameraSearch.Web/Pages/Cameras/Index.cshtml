@@ -1,0 +1,102 @@
+﻿@page
+@model CameraSearch.Web.ViewModels.CameraViewModel
+@{
+    ViewData["Title"] = "Camera Locations";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Divisible by 3</h5>
+                </div>
+                <div class="card-body">
+                    @foreach (var camera in Model.DivisibleBy3) {
+                        <div class="camera-item mb-2 p-2">
+                            <strong>#@camera.Number</strong>: @camera.Name<br>
+                            <small class="text-muted">@camera.Latitude, @camera.Longitude</small>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Divisible by 5</h5>
+                </div>
+                <div class="card-body">
+                    @foreach (var camera in Model.DivisibleBy5) {
+                        <div class="camera-item mb-2 p-2">
+                            <strong>#@camera.Number</strong>: @camera.Name<br>
+                            <small class="text-muted">@camera.Latitude, @camera.Longitude</small>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header bg-warning">
+                    <h5 class="mb-0">Divisible by 3 & 5</h5>
+                </div>
+                <div class="card-body">
+                    @foreach (var camera in Model.DivisibleBy3And5) {
+                        <div class="camera-item mb-2 p-2">
+                            <strong>#@camera.Number</strong>: @camera.Name<br>
+                            <small class="text-muted">@camera.Latitude, @camera.Longitude</small>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Not Divisible</h5>
+                </div>
+                <div class="card-body">
+                    @foreach (var camera in Model.NotDivisible) {
+                        <div class="camera-item mb-2 p-2">
+                            <strong>#@camera.Number</strong>: @camera.Name<br>
+                            <small class="text-muted">@camera.Latitude, @camera.Longitude</small>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">Camera Locations</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div id="map" style="height: 500px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+}
+
+@section Scripts {
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="~/js/map.js"></script>
+    <script>
+        // Pass server-side data to JavaScript
+        const cameraData = @Json.Serialize(Model.AllCameras);
+    </script>
+}

@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CameraSearch.Repository\CameraSearch.Repository.csproj" />
+    <ProjectReference Include="..\CameraSearch.Services\CameraSearch.Services.csproj" />
+    <ProjectReference Include="..\everybody-codes.Models\CameraSearch.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Images\video-camera-icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Pages\video-camera-icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
