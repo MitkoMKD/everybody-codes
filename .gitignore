@@ -22,3 +22,9 @@
 /everybody-codes/WebApplication1/bin/Debug/net5.0
 /everybody-codes/WebApplication1/obj
 /everybody-codes/CameraSearch.Web/obj
+/everybody-codes/CameraSearch.CLI/bin/Debug/net5.0
+/everybody-codes/CameraSearch.Repository/bin/Debug/net5.0
+/everybody-codes/CameraSearch.Services/bin/Debug/net5.0
+/everybody-codes/CameraSearch.UnitTests/bin/Debug/net5.0
+/everybody-codes/CameraSearch.Web/bin/Debug/net5.0
+/everybody-codes/everybody-codes.Models/bin/Debug/net5.0
