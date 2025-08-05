@@ -12,6 +12,7 @@ namespace CameraSearch.Repository {
     public class CameraRepository : ICameraRepository {
         private readonly string _filePath;
         private readonly ILogger<CameraRepository> _logger;
+        private const int InvalidCameraNumber = -1;
         public CameraRepository(IOptions<DataSettings> config, ILogger<CameraRepository> logger) {
             var appDataPath = Path.Combine(AppContext.BaseDirectory, config.Value.BaseDataPath);
             Directory.CreateDirectory(appDataPath);
@@ -60,7 +61,7 @@ namespace CameraSearch.Repository {
                 var cameraName = values[0].Trim();
                 var number = ExtractCameraNumber(cameraName);
 
-                if (number == -1) {
+                if (number == InvalidCameraNumber) {
                     _logger.LogWarning($"Line {lineNumber}: Invalid camera number format in '{cameraName}'");
                     return false;
                 }
@@ -102,9 +103,9 @@ namespace CameraSearch.Repository {
                     }
                 }
 
-                return -1;
+                return InvalidCameraNumber;
             } catch {
-                return -1;
+                return InvalidCameraNumber;
             }
         }
     }
