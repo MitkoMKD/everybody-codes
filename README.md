@@ -30,6 +30,6 @@ Displays them in columns with coordinates
 
 Plots all cameras on an interactive map
 
-Perfect example of .NET backend + JavaScript frontend integration!
+Perfect example of .NET backend + JavaScript frontend + Angular Frontend integration!
 
 Created as part of a coding assessment.
