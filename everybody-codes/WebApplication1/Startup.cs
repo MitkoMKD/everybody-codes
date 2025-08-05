@@ -30,7 +30,17 @@ namespace WebApplication1 {
 
             services.AddControllers();
             services.AddSwaggerGen(c => {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApplication1", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CameraSearch", Version = "v1" });
+            });
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAngularApp", policy =>
+                {
+                    policy.WithOrigins("http://localhost:4200") // Angular dev server
+                          .AllowAnyMethod()
+                          .AllowAnyHeader()
+                          .AllowCredentials();
+                });
             });
             services.Configure<DataSettings>(Configuration.GetSection("DataSettings"));
             // Register services
@@ -51,6 +61,7 @@ namespace WebApplication1 {
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseCors("AllowAngularApp");
 
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();

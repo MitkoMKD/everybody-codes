@@ -1,0 +1,78 @@
+<div class="container mt-4" *ngIf="vm">
+    <h1 class="mb-4">Camera Locations</h1>
+    <div class="row">
+        <!-- Divisible by 3 -->
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Divisible by 3</h5>
+                </div>
+                <div class="card-body">
+                    <div *ngFor="let camera of vm.divisibleBy3" class="camera-item mb-2 p-2">
+                        <strong>#{{ camera.number }}</strong>: {{ camera.name }}<br>
+                        <small class="text-muted">{{ camera.latitude }}, {{ camera.longitude }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Divisible by 5 -->
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Divisible by 5</h5>
+                </div>
+                <div class="card-body">
+                    <div *ngFor="let camera of vm.divisibleBy5" class="camera-item mb-2 p-2">
+                        <strong>#{{ camera.number }}</strong>: {{ camera.name }}<br>
+                        <small class="text-muted">{{ camera.latitude }}, {{ camera.longitude }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Divisible by 3 & 5 -->
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header bg-warning">
+                    <h5 class="mb-0">Divisible by 3 & 5</h5>
+                </div>
+                <div class="card-body">
+                    <div *ngFor="let camera of vm.divisibleBy3And5" class="camera-item mb-2 p-2">
+                        <strong>#{{ camera.number }}</strong>: {{ camera.name }}<br>
+                        <small class="text-muted">{{ camera.latitude }}, {{ camera.longitude }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Not Divisible -->
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Not Divisible</h5>
+                </div>
+                <div class="card-body">
+                    <div *ngFor="let camera of vm.notDivisible" class="camera-item mb-2 p-2">
+                        <strong>#{{ camera.number }}</strong>: {{ camera.name }}<br>
+                        <small class="text-muted">{{ camera.latitude }}, {{ camera.longitude }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map Section -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">Camera Locations</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div id="map" style="height: 500px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
